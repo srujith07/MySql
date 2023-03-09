@@ -1,0 +1,43 @@
+To install Kafka exporter in your Apache Kafka cluster on Ubuntu, you can follow these steps:
+
+Download the Kafka exporter binary from the Prometheus GitHub page:
+ruby
+Copy code
+wget https://github.com/prometheus/kafka_exporter/releases/download/v2.3.0/kafka_exporter-2.3.0.linux-amd64.tar.gz
+Extract the binary file from the tarball:
+Copy code
+tar -xzf kafka_exporter-2.3.0.linux-amd64.tar.gz
+Move the extracted files to a desired directory:
+bash
+Copy code
+sudo mv kafka_exporter-2.3.0.linux-amd64 /usr/local/kafka-exporter
+Configure Kafka exporter by creating a kafka_exporter.yml file in the /usr/local/kafka-exporter directory. You can use the following configuration file as a starting point:
+yaml
+Copy code
+global:
+  scrape_interval: 60s
+
+scrape_configs:
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['localhost:7071']
+Start the Kafka exporter by running the following command:
+javascript
+Copy code
+./kafka_exporter --config.file=/usr/local/kafka-exporter/kafka_exporter.yml
+Verify that Kafka exporter is running by visiting the following URL in your web browser:
+bash
+Copy code
+http://localhost:7071/metrics
+You should see a list of metrics exported by Kafka exporter.
+
+Finally, you can configure Prometheus to scrape metrics from Kafka exporter by adding the following configuration to the prometheus.yml file:
+yaml
+Copy code
+- job_name: 'kafka'
+  scrape_interval: 60s
+  static_configs:
+  - targets: ['localhost:7071']
+Save the prometheus.yml file and restart Prometheus to start scraping metrics from Kafka exporter.
+
+That's it! You have now installed Kafka exporter in your Apache Kafka cluster and configured Prometheus to scrape metrics from it.
